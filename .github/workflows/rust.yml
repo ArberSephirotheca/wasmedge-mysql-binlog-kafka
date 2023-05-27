@@ -45,5 +45,5 @@ jobs:
     - name: Run tests
       run: |
         cd mysql-binlog-kafka
-        wasmedge --env "DATABASE_URL=mysql://root:password@127.0.0.1:3306/mysql" sql-commands-test-wasm/insert.wasm
+        wasmedge --env "DATABASE_URL=mysql://root:password@127.0.0.1:3306/mysql" sql-commands-test-wasm/insert_customer.wasm
         cat out.log

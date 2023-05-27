@@ -298,7 +298,7 @@ async fn main() -> Result<(), mysql_cdc::errors::Error> {
         kafka_producer.create_topic(&topic_name).await;
         println!("Created kafka topic {}", topic_name);
         let partitionClient = kafka_producer
-            .get_partition_client(idx.try_into().unwrap())
+            .get_partition_client(0)
             .await
             .unwrap();
         println!("Got kafka partitionClient");
@@ -331,11 +331,12 @@ async fn main() -> Result<(), mysql_cdc::errors::Error> {
             .collect::<Vec<String>>();
 
         if event_tables.is_empty() {
+            println!("tables not in list or not supported event");
             continue;
         }
 
 
-        let topic = format!("{}_{}", mysql_database.clone(), event_tables[0].clone());
+        let topic: String = format!("{}_{}", mysql_database.clone(), event_tables[0].clone());
 
         println!("Try to create Kafka record");
         let kafka_record = kafka_producer.create_record(json_header, json_event);
@@ -374,7 +375,7 @@ async fn main() -> Result<(), mysql_cdc::errors::Error> {
                 .unwrap()
                 .clone();
 
-            println!("============================================== Event from Apache kafka ==========================================================================");
+            println!("============================================== Event from topic {} ==========================================================================", topic);
             println!();
             println!("Value: {}", String::from_utf8(value).unwrap());
             println!("Timestamp: {}", timestamp);
