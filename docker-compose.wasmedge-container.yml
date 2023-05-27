@@ -48,6 +48,7 @@ services:
     build:
       context: .
     environment:
+      TABLE_NAMES: "customer"
       SQL_USERNAME: root 
       SQL_PASSWORD: password 
       SQL_PORT: 3306 

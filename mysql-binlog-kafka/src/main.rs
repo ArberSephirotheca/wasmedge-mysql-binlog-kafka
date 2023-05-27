@@ -154,7 +154,7 @@ impl Info {
                         }
                     }
                 }
-                None
+                Some(tables)
             }
             BinlogEvent::TableMapEvent(e) => {
                 tables.push(e.table_name.clone());
