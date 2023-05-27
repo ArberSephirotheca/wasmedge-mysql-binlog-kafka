@@ -319,7 +319,7 @@ async fn main() -> Result<(), mysql_cdc::errors::Error> {
 
         let event_tables = client_info
             .extract_tables_from_event(&event)
-            .unwrap()
+            .unwrap_or_else(Vec::new())
             .into_iter()
             .filter_map(|table| {
                 if table_names.contains(&table) {
