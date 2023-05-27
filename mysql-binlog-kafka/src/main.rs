@@ -230,6 +230,9 @@ impl Info {
     fn get_partition_offset(&self, topic: &str) -> Option<i64> {
         self.topic_offset.get(topic).copied()
     }
+    fn set_partition_offset(&mut self, topic: &str, offset: i64){
+        self.topic_offset.insert(topic.to_string(), offset)
+    }
 }
 
 #[tokio::main(flavor = "current_thread")]
@@ -359,7 +362,7 @@ async fn main() -> Result<(), mysql_cdc::errors::Error> {
             .await
             .unwrap();
 
-        partition_offset = high_watermark;
+        client_info.set_partition_offset(topic.as_str(), high_watermark);
         println!("Kafka new partition_offset");
 
         for record in records {

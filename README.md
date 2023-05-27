@@ -202,3 +202,14 @@ This repository contains the modified code for completing the pretest. The modif
 - There are many different `BinlogEvents` remain unimplemented.
 
 # Result
+I implemented new insert file and introduced new table `customer` for testing.
+I also set the environment variable `TABLE_NAMES` to only contains `customer` table.
+```rust
+        conn.query_drop(
+            r"CREATE TEMPORARY TABLE customer (
+            id int not null,
+            account_name text
+        )",
+        )?;
+    
+``` 
