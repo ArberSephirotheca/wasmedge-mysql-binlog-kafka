@@ -231,7 +231,7 @@ impl Info {
         self.topic_offset.get(topic).copied()
     }
     fn set_partition_offset(&mut self, topic: &str, offset: i64){
-        self.topic_offset.insert(topic.to_string(), offset)
+        self.topic_offset.insert(topic.to_string(), offset);
     }
 }
 
