@@ -260,11 +260,12 @@ async fn main() -> Result<(), mysql_cdc::errors::Error> {
 
     let table_names: Vec<String> = match std::env::var("TABLE_NAMES") {
         Ok(names) => names
-            .split_terminator(',')
+            .split(',')
             .map(|name| name.trim().to_string())
             .collect(),
         _ => vec!["payment".to_string()],
     };
+    println!("tablenames: {:?}", table_names);
 
     let username = std::env::var("SQL_USERNAME").unwrap();
     let password = std::env::var("SQL_PASSWORD").unwrap();
