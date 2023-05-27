@@ -265,7 +265,6 @@ async fn main() -> Result<(), mysql_cdc::errors::Error> {
             .collect(),
         _ => vec!["payment".to_string()],
     };
-    println!("tablenames: {:?}", table_names);
 
     let username = std::env::var("SQL_USERNAME").unwrap();
     let password = std::env::var("SQL_PASSWORD").unwrap();
@@ -332,7 +331,6 @@ async fn main() -> Result<(), mysql_cdc::errors::Error> {
         }
 
         let json_event = serde_json::to_string(&event).expect("Couldn't convert sql event to json");
-        println!("json event: {}", json_event);
         let json_header =
             serde_json::to_string(&header).expect("Couldn't convert sql header to json");
 
@@ -389,5 +387,7 @@ async fn main() -> Result<(), mysql_cdc::errors::Error> {
         client_info.client.commit(&header, &event);
         println!("MySQL replication updated");
     }
+    thread::sleep(Duration::from_millis(sleep_time));
+
     Ok(())
 }
