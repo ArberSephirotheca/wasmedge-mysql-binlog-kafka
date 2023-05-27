@@ -212,4 +212,6 @@ I also set the environment variable `TABLE_NAMES` to only contains `customer` ta
         )",
         )?;
     
-``` 
+```
+After running the CI,the program only outputs the event from `mysql_customer` topic, which means it successfully sends binlogs to the correct table and only processes the binlog event for tables indicated in the environment variable.![Screenshot from 2023-05-27 15-57-03](https://github.com/ArberSephirotheca/wasmedge-mysql-binlog-kafka/assets/19250266/04c5dd65-6878-42b4-be79-b4227270fec6)
+
