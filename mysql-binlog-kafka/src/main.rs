@@ -312,6 +312,12 @@ async fn main() -> Result<(), mysql_cdc::errors::Error> {
     for result in client_info.client.replicate()? {
         println!("Received MySQL event");
         let (header, event) = result?;
+        let json_event = serde_json::to_string(&event).expect("Couldn't convert sql event to json");
+        println!("json event: {}", json_event);
+        let json_header =
+            serde_json::to_string(&header).expect("Couldn't convert sql header to json");
+        let topic = format!("{}_{}", mysql_database.clone(), event_tables[0].clone());
+
         let event_tables = client_info
             .extract_tables_from_event(&event)
             .unwrap()
@@ -329,12 +335,7 @@ async fn main() -> Result<(), mysql_cdc::errors::Error> {
             continue;
         }
 
-        let topic = format!("{}_{}", mysql_database.clone(), event_tables[0].clone());
 
-        let json_event = serde_json::to_string(&event).expect("Couldn't convert sql event to json");
-        println!("json_event: {}", json_event);
-        let json_header =
-            serde_json::to_string(&header).expect("Couldn't convert sql header to json");
 
         println!("Try to create Kafka record");
         let kafka_record = kafka_producer.create_record(json_header, json_event);
