@@ -332,6 +332,7 @@ async fn main() -> Result<(), mysql_cdc::errors::Error> {
         let topic = format!("{}_{}", mysql_database.clone(), event_tables[0].clone());
 
         let json_event = serde_json::to_string(&event).expect("Couldn't convert sql event to json");
+        println!("json_event: {}", json_event);
         let json_header =
             serde_json::to_string(&header).expect("Couldn't convert sql header to json");
 
